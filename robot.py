@@ -20,7 +20,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-import praw, time, ConfigParser
+import praw, time, ConfigParser, sys
+from pprint import pprint
 from optparse import OptionParser
 
 USERAGENT = "Edmproduction Feedback Thread Cleaner | a bot by /u/BizCaus"
@@ -66,13 +67,14 @@ def hasGivenFeedback(username, thread):
 	return False
 
 # Determine whether or not the user of the comment is useless and if so, delete the comment
-def cleanComment(comment,thread):	
-	if time.time() - comment.created_utc > 3600: # 3600 seconds = 1 hour
-		if not hasGivenFeedback(comment, thread):			
-			print "removed " + comment.author.name + "'s comment in " + thread.title
-			comment.remove()
-		else:
-			print "did not remove " + comment.author.name + "'s comment in " + thread.title
+def cleanComment(comment,thread):
+	if comment.banned_by == None:
+		if time.time() - comment.created_utc > 3600: # 3600 seconds = 1 hour		
+			if not hasGivenFeedback(comment, thread):			
+				print "removed " + comment.author.name + "'s comment in " + thread.title
+				comment.remove()
+			else:
+				print "did not remove " + comment.author.name + "'s comment in " + thread.title
 
 # Filter threads to only include the feedback threads
 def cleanThreads(threads):
