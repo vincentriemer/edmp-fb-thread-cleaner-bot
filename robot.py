@@ -20,7 +20,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-import praw, time
+import praw, time, ConfigParser
+from optparse import OptionParser
 
 USERAGENT = "Edmproduction Feedback Thread Cleaner | a bot by /u/BizCaus"
 
