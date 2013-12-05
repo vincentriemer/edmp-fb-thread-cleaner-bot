@@ -1,4 +1,4 @@
-# EDMProduction Feedback Thread Cleaner Bot
+# EDMP Feedback Thread Cleaner Bot
 ###### by Vincent Riemer
 
 A feedback thread cleaning bot for r/edmproduction
