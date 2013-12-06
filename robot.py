@@ -36,6 +36,7 @@ config.readfp(open(options.conf_path))
 USERNAME = config.get("feedbackcleaner", "username")
 PASSWORD = config.get("feedbackcleaner", "password")
 SUBREDDIT = config.get("feedbackcleaner", "subreddit")
+TIMETHRESHOLD = int(config.get("feedbackcleaner", "timethreshold")) # this is in seconds
 
 r = praw.Reddit(USERAGENT)
 r.login(USERNAME,PASSWORD)
@@ -62,15 +63,15 @@ def hasGivenFeedback(username, thread):
 	for root_comment in getAllComments(thread):
 		# Check all comments one level past the root level
 		for leaf in getAllComments(root_comment):
-			if leaf.author.user_name == username:
+			if leaf.author.name == username:				
 				return True
 	return False
 
 # Determine whether or not the user of the comment is useless and if so, delete the comment
 def cleanComment(comment,thread):
 	if comment.banned_by == None:
-		if time.time() - comment.created_utc > 3600: # 3600 seconds = 1 hour		
-			if not hasGivenFeedback(comment, thread):			
+		if time.time() - comment.created_utc > TIMETHRESHOLD: 		
+			if not hasGivenFeedback(comment.author.name, thread):			
 				print "removed " + comment.author.name + "'s comment in " + thread.title
 				comment.remove()
 			else:
@@ -81,10 +82,9 @@ def cleanThreads(threads):
 	for thread in threads:
 		thread_title = thread.title			
 		if thread_title.startswith('Feedback Thread'):
-			print("cleaning " + thread_title + "..."),
+			print("cleaning " + thread_title + "...")
 			for comment in getAllComments(thread):
 				cleanComment(comment,thread)
-			print("done!")
 
 # Main bot loop
 running = True
@@ -95,4 +95,4 @@ while running:
 	threads = subreddit.get_new()
 	cleanThreads(threads)
 	print "cleaning pass completed"
-	time.sleep(3600)
+	time.sleep(TIMETHRESHOLD / 2)
