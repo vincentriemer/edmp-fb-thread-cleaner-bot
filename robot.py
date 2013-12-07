@@ -95,4 +95,4 @@ while running:
 	threads = subreddit.get_new()
 	cleanThreads(threads)
 	print "cleaning pass completed"
-	time.sleep(TIMETHRESHOLD / 2)
+	time.sleep(TIMETHRESHOLD / 10)
