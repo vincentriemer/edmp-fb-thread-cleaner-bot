@@ -28,7 +28,7 @@ Launch the script using the following command in the terminal:
 
 	$ python robot.py -c config.cfg
 
-As of the time of writing this, the line of code that actually bans the comments from reddit has been commented out...
+As of the time of writing this documentation, the line of code that actually bans the comments from reddit has been commented out...
 
 	# comment.remove() # UNCOMMENT TO ENABLE COMMENT REMOVALS
 
