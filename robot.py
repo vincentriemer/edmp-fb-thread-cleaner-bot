@@ -20,8 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-import praw, time, ConfigParser, sys
-from pprint import pprint
+import praw, time, ConfigParser
 from optparse import OptionParser
 
 USERAGENT = "Edmproduction Feedback Thread Cleaner | a bot by /u/BizCaus"
@@ -72,7 +71,7 @@ def cleanComment(comment,thread):
 		if time.time() - comment.created_utc > TIMETHRESHOLD: 		
 			if not hasGivenFeedback(comment.author.name, thread):			
 				print "removed " + comment.author.name + "'s comment in " + thread.title
-				# comment.remove()
+				# comment.remove() # UNCOMMENT TO ENABLE COMMENT REMOVALS
 			else:
 				print "did not remove " + comment.author.name + "'s comment in " + thread.title
 
