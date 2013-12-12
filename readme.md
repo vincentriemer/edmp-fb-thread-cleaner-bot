@@ -8,7 +8,7 @@ That's where this bot comes in. Created for the subreddit I moderate, [r/edmprod
 
 ### Installation & Usage
 
-Just clone the github repository to get the script's files:
+Just clone the github repository to get the script's source:
 
 	$ git clone https://github.com/vincentriemer/edmp-fb-thread-cleaner-bot.git
 
