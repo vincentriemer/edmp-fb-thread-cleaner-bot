@@ -35,7 +35,6 @@ config = ConfigParser.RawConfigParser()
 config.readfp(open(options.conf_path))
 USERNAME = config.get("feedbackcleaner", "username")
 PASSWORD = config.get("feedbackcleaner", "password")
-SUBREDDIT = config.get("feedbackcleaner", "subreddit")
 TIMETHRESHOLD = int(config.get("feedbackcleaner", "timethreshold")) # this is in seconds
 
 r = praw.Reddit(USERAGENT)
@@ -63,7 +62,7 @@ def hasGivenFeedback(username, thread):
 	for root_comment in getAllComments(thread):
 		# Check all comments one level past the root level
 		for leaf in getAllComments(root_comment):
-			if leaf.author.name == username:				
+			if leaf.author != None and leaf.author.name == username:				
 				return True
 	return False
 
@@ -73,7 +72,7 @@ def cleanComment(comment,thread):
 		if time.time() - comment.created_utc > TIMETHRESHOLD: 		
 			if not hasGivenFeedback(comment.author.name, thread):			
 				print "removed " + comment.author.name + "'s comment in " + thread.title
-				comment.remove()
+				# comment.remove()
 			else:
 				print "did not remove " + comment.author.name + "'s comment in " + thread.title
 
@@ -84,15 +83,17 @@ def cleanThreads(threads):
 		if thread_title.startswith('Feedback Thread'):
 			print("cleaning " + thread_title + "...")
 			for comment in getAllComments(thread):
-				cleanComment(comment,thread)
+				if not comment.author == None:
+					cleanComment(comment,thread)
+			return # only clean the latest feedback thread
 
 # Main bot loop
 running = True
 while running:
 	print "=================================="
 	print "running cleaning pass on " + time.asctime(time.localtime(time.time())) + "..."
-	subreddit = r.get_subreddit(SUBREDDIT)
-	threads = subreddit.get_new()
+	bot = r.get_redditor(USERNAME)
+	threads = bot.get_submitted()
 	cleanThreads(threads)
 	print "cleaning pass completed"
 	time.sleep(TIMETHRESHOLD / 10)
