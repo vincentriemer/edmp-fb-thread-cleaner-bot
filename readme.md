@@ -20,13 +20,9 @@ Before running you must make sure you also create a configuration file named con
 	username = myAwesomeRedditBotUsername
 	password = myAwesomeRedditBotPassword
 	timethreshold = myPostRemovalTimeThreshold
+    notificationsubject = Your comment has been removed from #{thread_name}
+    notificationmessage = Hello #{user},\n\nYour following comment has been automatically removed:\n\n#{comment}\n\nThis is because you have not given feedback to any other users in the thread within 1 hour of posting your material for feedback. If you wish to have your comment restored, please give feedback to another user's material on the same thread and I will restore your comment as soon as possible.
 
 Launch the script using the following command in the terminal:
 
 	$ python robot.py -c config.cfg
-
-As of the time of writing this documentation, the line of code that actually bans the comments from reddit has been commented out...
-
-	# comment.remove() # UNCOMMENT TO ENABLE COMMENT REMOVALS
-
-...and just prints the results to the terminal. When you are confident enough that you've properly configured the script, uncomment the code.
